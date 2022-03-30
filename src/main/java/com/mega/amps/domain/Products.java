@@ -3,8 +3,8 @@ package com.mega.amps.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "products")
-public class products {
+@Table(name = "products_info")
+public class Products {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
