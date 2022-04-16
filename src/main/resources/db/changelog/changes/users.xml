@@ -10,13 +10,16 @@
             <column autoIncrement="true" name="user_id" type="INTEGER">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="full_name" type="VARCHAR(255)">
+            <column name="fullname" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>
             <column name="username" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>
             <column name="password" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="role" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>
             <column name="active" type="VARCHAR(255)">

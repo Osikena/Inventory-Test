@@ -1,27 +1,31 @@
 package com.mega.amps.domain;
 
-import org.springframework.data.jpa.domain.AbstractAuditable_;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "users_info")
-public class Users implements Serializable {
+public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "sequenceGenerator")
-    private long user_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private long id;
 
-    @Column(name = "full_name", length = 100)
-    private String full_name;
+    @Column(name = "fullname", length = 100)
+    private String fullname;
 
     @Column(name = "username", length = 100)
     private String username;
 
     @Column(name = "password", length = 100)
     private String password;
+
+    @NotNull
+    @Column(name = "role", length = 100)
+    private String role;
 
     @Column(name = "active", length = 100)
     private String active;
@@ -32,20 +36,20 @@ public class Users implements Serializable {
     @Column(name = "date_time_created", length = 100)
     private String date_time_created;
 
-    public long getUser_id() {
-        return user_id;
+    public long getId() {
+        return id;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getUsername() {
@@ -63,6 +67,10 @@ public class Users implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getRole() { return role; }
+
+    public void setRole(String role) { this.role = role; }
 
     public String getActive() {
         return active;
@@ -86,5 +94,19 @@ public class Users implements Serializable {
 
     public void setDate_time_created(String date_time_created) {
         this.date_time_created = date_time_created;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fullname='" + fullname + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", active='" + active + '\'' +
+                ", status='" + status + '\'' +
+                ", date_time_created='" + date_time_created + '\'' +
+                '}';
     }
 }
