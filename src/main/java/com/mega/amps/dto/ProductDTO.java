@@ -1,42 +1,16 @@
-package com.mega.amps.domain;
+package com.mega.amps.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
+public class ProductDTO {
 
-@Entity
-@Table(name = "products_info")
-public class Product implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", length = 20)
     private long product_id;
-
-    @Column(name = "product_barcode", length = 100)
     private String product_barcode;
-
-    @Column(name = "product_name", length = 100)
     private String product_name;
-
-    @Column(name = "product_category", length = 100)
     private String product_category;
-
-    @Column(name = "recommended_selling_price", length = 100)
     private String recommended_selling_price;
-
-    @Column(name = "quantity", length = 100)
     private String quantity;
-
-    @Column(name = "cost_price", length = 100)
     private String cost_price;
-
-    @Column(name = "date_time_created", length = 100)
     private String date_time_created;
-
-    @Column(name = "production_date", length = 100)
     private String production_date;
-
-    @Column(name = "expiration_date", length = 100)
     private String expiration_date;
 
     public long getProduct_id() {
@@ -117,5 +91,21 @@ public class Product implements Serializable {
 
     public void setProduct_barcode(String product_barcode) {
         this.product_barcode = product_barcode;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "product_id=" + product_id +
+                ", product_barcode='" + product_barcode + '\'' +
+                ", product_name='" + product_name + '\'' +
+                ", product_category='" + product_category + '\'' +
+                ", recommended_selling_price='" + recommended_selling_price + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", cost_price='" + cost_price + '\'' +
+                ", date_time_created='" + date_time_created + '\'' +
+                ", production_date='" + production_date + '\'' +
+                ", expiration_date='" + expiration_date + '\'' +
+                '}';
     }
 }

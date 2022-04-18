@@ -1,7 +1,9 @@
 package com.mega.amps.securityconfig;
 
+import com.mega.amps.domain.logic.Logic;
 import com.mega.amps.jwtconfig.JWTConfigurer;
 import com.mega.amps.jwtconfig.TokenProvider;
+import com.mega.amps.service.ProductService;
 import com.mega.amps.service.UserSevice;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,4 +78,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
     }
+
+    @Bean
+    public Logic logic(){
+        return new Logic();
+    }
+
 }

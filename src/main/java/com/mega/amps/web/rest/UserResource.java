@@ -131,7 +131,7 @@ public class UserResource {
         response.setMessage("User Created Successfully");
         response.setData(null);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
