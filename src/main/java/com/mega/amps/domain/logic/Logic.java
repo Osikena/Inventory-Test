@@ -45,6 +45,32 @@ public class Logic {
         return randomcode;
     }
 
+    public String generateSalesId(){
+        String randomcode = null;
+
+        try{
+
+            LocalDateTime dateTime = LocalDateTime.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String[] add = dateTime.format(dateTimeFormatter).split(" ");
+            String[] date = add[0].split("-");
+            Long totalDate = Long.parseLong(date[0]) + Long.parseLong(date[1]) + Long.parseLong(date[2]);
+
+            String[] time = add[1].split(":");
+            Long totalTime = Long.parseLong(time[0]) + Long.parseLong(time[1]) + Long.parseLong(time[2]);
+
+            long totalDateTime = totalDate + totalTime;
+
+            randomcode = Long.toString(totalDateTime);
+
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return randomcode;
+    }
+
 
 
 }

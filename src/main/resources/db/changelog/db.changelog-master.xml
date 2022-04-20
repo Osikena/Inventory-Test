@@ -8,4 +8,6 @@
     <include file="/db/changelog/changes/products.xml"/>
     <include file="/db/changelog/changes/users.xml"/>
     <include file="/db/changelog/changes/productsmodified.xml"/>
+    <include file="/db/changelog/changes/salesinfoconst.xml"/>
+    <include file="/db/changelog/changes/salesinfolist.xml"/>
 </databaseChangeLog>

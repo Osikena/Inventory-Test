@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="osikena" id="4">
+        <createTable tableName="sales_info_const">
+            <column autoIncrement="true" name="sales_info_const_id" type="INTEGER">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sales_id" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="customer_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="seller_username" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="grand_total_price" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="grand_total_cost_price" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="grand_total_profit_loss" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="mode_of_payment" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_time_created" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
