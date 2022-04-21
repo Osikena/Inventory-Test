@@ -1,5 +1,6 @@
 package com.mega.amps.web.rest;
 
+import com.mega.amps.domain.Product;
 import com.mega.amps.domain.SalesInfoConst;
 import com.mega.amps.domain.SalesInfoList;
 import com.mega.amps.domain.logic.Logic;
@@ -10,15 +11,13 @@ import com.mega.amps.dto.response.GenericResponse;
 import com.mega.amps.mapper.SalesInfoConstMapper;
 import com.mega.amps.mapper.SalesInfoListMapper;
 import com.mega.amps.repository.SalesInfoListRepository;
+import com.mega.amps.service.ProductService;
 import com.mega.amps.service.SalesInfoConstService;
 import com.mega.amps.service.SalesInofListService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -34,14 +33,17 @@ public class SalesResource {
     private SalesInofListService salesInofListService;
     private SalesInfoConstMapper salesInfoConstMapper;
     private SalesInfoListMapper salesInfoListMapper;
+    private ProductService productService;
 
     public SalesResource(Logic logic, SalesInfoConstService salesInfoConstService, SalesInofListService salesInofListService,
-                         SalesInfoConstMapper salesInfoConstMapper, SalesInfoListMapper salesInfoListMapper) {
+                         SalesInfoConstMapper salesInfoConstMapper, SalesInfoListMapper salesInfoListMapper,
+                         ProductService productService) {
         this.logic = logic;
         this.salesInfoConstService = salesInfoConstService;
         this.salesInofListService = salesInofListService;
         this.salesInfoConstMapper = salesInfoConstMapper;
         this.salesInfoListMapper = salesInfoListMapper;
+        this.productService = productService;
     }
 
     @PostMapping("/sales/sell")
@@ -97,6 +99,12 @@ public class SalesResource {
         salesInfoConstService.save(salesInfoConst);
 
         for (SalesInfoList salesInfoList : salesInfoLists){
+
+            Product product = productService.findProductByBarcode(salesInfoList.getProduct_barcode());
+            product.setQuantity(Long.toString(Long.parseLong(product.getQuantity()) - Long.parseLong(salesInfoList.getSelling_quantity())));
+
+            productService.save(product);
+
             salesInfoList.setSales_id(sales_id);
             salesInofListService.save(salesInfoList);
         }
@@ -122,6 +130,15 @@ public class SalesResource {
         salesInfoDTO.setSalesList(salesInfoListDTOList);
 
         response.setData(salesInfoDTO);
+
+        return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/sales/{fromdate}/{todate}/{modeofpayment}")
+    public ResponseEntity<GenericResponse> listofsales(@Valid @PathVariable String fromdate, String todate, String modeofpayment){
+
+        GenericResponse response = new GenericResponse();
 
         return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
 
