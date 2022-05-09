@@ -3,31 +3,44 @@ package com.mega.amps.securityconfig;
 import com.mega.amps.domain.logic.Logic;
 import com.mega.amps.jwtconfig.JWTConfigurer;
 import com.mega.amps.jwtconfig.TokenProvider;
-import com.mega.amps.service.ProductService;
 import com.mega.amps.service.UserSevice;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
-@Configuration
+//@Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@Import(SecurityProblemSupport.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final TokenProvider tokenProvider;
     private final UserSevice userSevice;
+    private final CorsFilter corsFilter;
+    private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfig(TokenProvider tokenProvider, UserSevice userSevice){
+    public SecurityConfig(TokenProvider tokenProvider, UserSevice userSevice, CorsFilter corsFilter, SecurityProblemSupport problemSupport){
 
         this.tokenProvider = tokenProvider;
         this.userSevice = userSevice;
+        this.corsFilter = corsFilter;
+        this.problemSupport = problemSupport;
     }
 
     @Override
@@ -39,15 +52,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
             http.cors().and().csrf().disable()
-                .authorizeRequests()
+                    .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                    .exceptionHandling()
+                    .authenticationEntryPoint(problemSupport)
+                    .accessDeniedHandler(problemSupport)
+                    .and()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .authorizeRequests()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/connection").hasRole("USER")
                     .antMatchers("/api/connection/admin").hasRole("ADMIN")
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()
-                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().apply(securityConfigurerAdapter());
+                    .and().apply(securityConfigurerAdapter());
 
 
     }
